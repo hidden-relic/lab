@@ -1,32 +1,13 @@
 local util = require("util")
 
-local t = {
-    "[color=0, 1, 0]", 
-    "[color=0, 0.5, 0.5]", 
-    "[color=0, 0, 1]",
-    "[color=0.5, 0, 0.5]",  
-    "[color=1, 0, 0]",
-    "[color=0.5, 0.5, 0]",
-    "[color=0, 1, 0]", 
-    "[color=0, 0.5, 0.5]", 
-    "[color=0, 0, 1]",
-    "[color=0.5, 0, 0.5]",  
-    "[color=1, 0, 0]",
-    "[color=0.5, 0.5, 0]",
-}
-
 local str = ""
-
-local function color(n, str)
-    return t[n] .. tostring(str) .. "[/color]"
-end
 
 local function getIndent(n)
     local n = n or 1
     local indentation = ">>"
     local str = ""
     for i = 1, n, 1 do
-            str = str .. color(i, indentation)
+            str = str..indentation
     end
     return str
 end
@@ -50,7 +31,7 @@ function buildTree(recipe, count, indent)
     if recipe then
         local string = " x" .. count .. " " .. recipe.name ..
         "\n"
-        str = str .. getIndent(indent) .. color(indent, string)
+        str = str .. getIndent(indent) .. string
         if ingredients then
             indent = indent + 1
             for i, ingredient in pairs(ingredients) do
@@ -65,7 +46,7 @@ function buildTree(recipe, count, indent)
                 elseif ingredient.type == "item" and not recipes[ingredient.name] then
                     string = " x" .. count .. " " .. ingredient.name ..
         "\n"
-        str = str .. getIndent(indent) .. color(indent, string)
+        str = str .. getIndent(indent)..string
                 end
             end
         end
@@ -82,10 +63,10 @@ commands.add_command("tree",
     if command.parameter then
         if game.recipe_prototypes[command.parameter] then
             player.print("[font=debug-mono]"..buildTree(game.recipe_prototypes[command.parameter]).."[/font]")
-            game.write_file("lab/tree_"..command.parameter..".txt", "")
+            game.write_file("lab/"..command.parameter.."_tree.txt", buildTree(game.recipe_prototypes[command.parameter]))
         elseif type(command.parameter) == "LuaRecipePrototype" then
             player.print("[font=debug-mono]"..buildTree(command.parameter).."[/font]")
-            game.write_file("lab/"..command.parameter..".txt", "")
+            game.write_file("lab/"..command.parameter..".txt", buildTree(game.recipe_prototypes[command.parameter]))
         end
     else
         for _, item in pairs(game.recipe_prototypes) do
