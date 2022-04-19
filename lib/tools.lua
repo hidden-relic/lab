@@ -33,14 +33,11 @@ function tools.stockUp()
 end
 
 function tools.makeSpawn()
-    material_chest = s.create_entity   {
+    material_chest = s.create_entity {
         force = "player",
         name = "logistic-chest-passive-provider",
-        position = {
-          x = 1.5,
-          y = -2.5
-        }
-      }
+        position = {x = 1.5, y = -2.5}
+    }
     local roboport = s.create_entity {
         force = "player",
         direction = 0,
@@ -63,126 +60,88 @@ function tools.makeSpawn()
     local substation = s.create_entity {
         force = "player",
         name = "substation",
-        position = {
-            x = -2,
-            y = -6
-        }
+        position = {x = -2, y = -6}
     }
     local power = s.create_entity {
         force = "player",
         name = "electric-energy-interface",
-        position = {
-            x = 0,
-            y = -6
-        }
+        position = {x = 0, y = -6}
     }
     local constant_combinator = s.create_entity {
         force = "player",
         control_behavior = {
-          filters = {
-            {
-              count = -1,
-              index = 1,
-              signal = {
-                name = "logistic-robot",
-                type = "item"
-              }
-            },
-            {
-              count = -1,
-              index = 2,
-              signal = {
-                name = "construction-robot",
-                type = "item"
-              }
+            filters = {
+                {
+                    count = -1,
+                    index = 1,
+                    signal = {name = "logistic-robot", type = "item"}
+                },
+                {
+                    count = -1,
+                    index = 2,
+                    signal = {name = "construction-robot", type = "item"}
+                }
             }
-          }
         },
         direction = 4,
         name = "constant-combinator",
-        position = {
-          x = -3.5,
-          y = -3.5
-        }
-      }
+        position = {x = -3.5, y = -3.5}
+    }
     local stack_inserter = s.create_entity {
         force = "player",
-        control_behavior = {
-          circuit_mode_of_operation = 1
-        },
+        control_behavior = {circuit_mode_of_operation = 1},
         direction = 6,
         name = "stack-filter-inserter",
-        position = {
-          x = -3.5,
-          y = -1.5
-        }
-      }
-    local decider_combinator = s.create_entity   {
+        position = {x = -3.5, y = -1.5}
+    }
+    local decider_combinator = s.create_entity {
         force = "player",
         control_behavior = {
-          decider_conditions = {
-            comparator = "≤",
-            constant = 0,
-            copy_count_from_input = false,
-            first_signal = {
-              name = "signal-anything",
-              type = "virtual"
-            },
-            output_signal = {
-              name = "signal-anything",
-              type = "virtual"
+            decider_conditions = {
+                comparator = "≤",
+                constant = 0,
+                copy_count_from_input = false,
+                first_signal = {name = "signal-anything", type = "virtual"},
+                output_signal = {name = "signal-anything", type = "virtual"}
             }
-          }
         },
         direction = 6,
         name = "decider-combinator",
-        position = {
-          x = -4,
-          y = -2.5
-        }
-      }
+        position = {x = -4, y = -2.5}
+    }
     local infinity_chest = s.create_entity {
         force = "player",
         infinity_settings = {
-          filters = {
-            { 
-              count = 50,
-              index = 1,
-              mode = "at-least",
-              name = "logistic-robot"
+            filters = {
+                {
+                    count = 50,
+                    index = 1,
+                    mode = "at-least",
+                    name = "logistic-robot"
+                },
+                {
+                    count = 50,
+                    index = 2,
+                    mode = "at-least",
+                    name = "construction-robot"
+                }
             },
-            {
-              count = 50,
-              index = 2,
-              mode = "at-least",
-              name = "construction-robot"
-            }
-          },
-          remove_unfiltered_items = false
+            remove_unfiltered_items = false
         },
         name = "infinity-chest",
-        position = {
-          x = -4.5,
-          y = -1.5
-        }
-      }
+        position = {x = -4.5, y = -1.5}
+    }
     s.create_entity {
         force = "player",
         name = "logistic-chest-storage",
-        position = {
-          x = 1.5,
-          y = -3.5
-        }
-      }
+        position = {x = 1.5, y = -3.5}
+    }
     s.create_entity {
         force = "player",
         name = "logistic-chest-storage",
-        position = {
-          x = 1.5,
-          y = -1.5
-        }
-      }
-      local roboport_connection = roboport.connect_neighbour({
+        position = {x = 1.5, y = -1.5}
+    }
+    local roboport_connection = roboport.connect_neighbour({
         wire = defines.wire_type.red,
         target_entity = decider_combinator,
         target_circuit_id = defines.circuit_connector_id.combinator_input
@@ -197,8 +156,8 @@ function tools.makeSpawn()
         target_entity = stack_inserter,
         source_circuit_id = defines.circuit_connector_id.combinator_output
     })
-    roboport.insert{name = "construction-robot", count = 1}
-    roboport.insert{name = "logistic-robot", count = 1}
+    roboport.insert {name = "construction-robot", count = 1}
+    roboport.insert {name = "logistic-robot", count = 1}
 end
 
 function tools.fixCoords(t, y)
@@ -312,7 +271,8 @@ end
 
 function tools.drawCircle(position, radius, color, width, filled, TTL)
     local circle = rendering.draw_circle {
-        color = color or {
+        color = color or
+            {
                 r = math.random(0, 255),
                 g = math.random(0, 255),
                 b = math.random(0, 255)
@@ -326,6 +286,44 @@ function tools.drawCircle(position, radius, color, width, filled, TTL)
         time_to_live = TTL or 60 * 5 * 60
     }
     return circle
+end
+
+function tools.split(inputstr)
+    local sep = "%s"
+    local t = {}
+    for str in string.gmatch(inputstr, "([^" .. sep .. "]+)") do
+        table.insert(t, str)
+    end
+    return t
+end
+
+function tools.newGroup(player)
+    local player = player
+    local ng = group:new(player)
+    if ng then
+        player.print(
+            "Group successfully created. You should now add unit members with /group add")
+        return ng
+    else
+        player.print("Couldn't make group..")
+    end
+end
+
+function tools.addToGroup(player, entity)
+    local player = player
+    local entity = entity
+    if entity.type ~= "unit" then return end
+    if not my_group then
+        my_group = tools.newGroup(player)
+        player.print(
+            "No Group was set so one was created. You can now add more unit members with /group add")
+    end
+    if my_group and entity.valid then
+        my_group:add_member(entity)
+        player.print(entity.name .. " successfully added")
+    else
+        player.print("Couldn't add")
+    end
 end
 
 tools.drawText = {

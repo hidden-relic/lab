@@ -1,8 +1,12 @@
 tools = require('lib/tools')
-require('lib/commands')
+require('lib/group')
 require('lib/buildTree')
+require('lib/commands')
 s = {}
-script.on_init(function(event) s = tools.createLabSurface() end)
+script.on_init(function(event)
+    s = tools.createLabSurface()
+    my_group = {}
+end)
 
 script.on_event(defines.events.on_tick, function(event)
     if game.tick == (1 * 60) then tools.makeSpawn() end
@@ -16,7 +20,6 @@ end)
 
 script.on_event(defines.events.on_player_created, function(event)
     local player = game.players[event.player_index]
-
     tools.safeTeleport(player, s, {x = 0, y = 0})
     tools.givePowerArmorMK2(player)
     tools.giveTestKit(player)
