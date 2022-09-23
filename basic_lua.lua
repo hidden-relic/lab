@@ -76,7 +76,7 @@ end
 -- lua doesn't seem to mind incorrect indents. you just need an "end".
 function a_table.another_table_function(params) print("single line function") end
 
--- instead of curlies or indents to signify code blocks, lua uses a suffix of 'then' or 'do', and a prefix of 'end'
+-- instead of curlies or indents to signify code blocks, lua uses a prefix of 'then' or 'do', and a suffix of 'end'
 -- 'then' is for a decision i guess you'd call it
 if a == b then print(a) end
 -- 'do' is for looping
