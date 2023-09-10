@@ -1,2 +1,2 @@
 # lab
- a blueprinting helper scenario
+ a blueprinting helper scenario!
