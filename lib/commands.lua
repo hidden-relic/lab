@@ -7,7 +7,7 @@ commands.add_command("grid",
                      function(command)
     local player = game.players[command.player_index]
     if global.grid[1] then
-        for __, line in pairs(global.grid) do line.destroy() end
+        for __, line in pairs(global.grid) do rendering.destroy(line) end
     end
     if not command.parameter then
         player.print("Invalid parameter. Please give a size.")
