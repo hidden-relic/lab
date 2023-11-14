@@ -8,9 +8,10 @@ script.on_init(function(event)
     s = tools.createLabSurface()
 end)
 
+script.on_nth_tick(1800, tools.stockUp)
+
 script.on_event(defines.events.on_tick, function(event)
     if game.tick == (1 * 60) then tools.makeSpawn() end
-    if (game.tick % 60) == 0 then tools.stockUp() end
     if global.markers then
         for _, marker in pairs(global.markers) do
             if not rendering.is_valid(marker) then marker = nil end
